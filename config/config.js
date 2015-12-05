@@ -9,6 +9,9 @@ var base = {
     root: path.normalize(path.join(__dirname, "/..")),
     env: env,
   },
+  socket: {
+    models: ["Count"]
+  }
 };
 
 var specific = {
@@ -35,7 +38,7 @@ var specific = {
   production: {
     app: {
       port: process.env.PORT || 3000,
-      name: "Koa React Gulp Mongoose Mocha",
+      name: "Koa React Gulp Mongoose Mocha"
     },
     mongo: {
       url: "mongodb://localhost/koareactfullexample",

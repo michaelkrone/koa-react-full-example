@@ -1,12 +1,13 @@
 import React from "react";
 import request from "superagent";
+import Client from "socket.io-client";
 
 import { Button, Badge } from "react-bootstrap";
 
 const get = (url, cb) => {
   request.get(url)
-  .set("Content-Type", "application/json")
-  .end(cb);
+    .set("Content-Type", "application/json")
+    .end(cb);
 };
 
 export default class Counter extends React.Component {
@@ -17,6 +18,7 @@ export default class Counter extends React.Component {
   constructor(props) {
     super(props);
     this.state = { count: props.initialCount };
+    this.socket = new Client();
   }
 
   componentWillMount() {
@@ -29,6 +31,10 @@ export default class Counter extends React.Component {
     });
   }
 
+  componentDidMount() {
+    this.socket.on('Count:save', (cnt) => this.setState({ count: cnt.value }));
+	}
+
   onClickInc = (event) => {
     event.preventDefault();
     get("/inc", (err, res) => {
@@ -36,7 +42,6 @@ export default class Counter extends React.Component {
         console.log(err);
         return;
       }
-      this.setState({ count: res.body.count });
     });
   }
 
@@ -47,13 +52,12 @@ export default class Counter extends React.Component {
         console.log(err);
         return;
       }
-      this.setState({ count: res.body.count });
     });
   }
 
   render() {
     return (
-      <div>
+     <div>
         <h3>Counter</h3>
         <div className="counter">
           Count

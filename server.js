@@ -42,9 +42,11 @@ require("./config/koa")(app, config, passport);
 // Routes
 require("./config/routes")(app, passport);
 
+require("./config/socket")(app, config, passport);
+
 // Start app
 if (!module.parent) {
-  app.listen(config.app.port);
+  app.server.listen(config.app.port);
   console.log("Server started, listening on port: " + config.app.port);
 }
 console.log("Environment: " + config.app.env);
